@@ -32,17 +32,14 @@ function handleSubmit(e){
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your trip!</h3>
       <select value={quantity} onChange={(e)=>setQuantity(e.target.value)}>
-        {Array.from({length:30},(_,i)=>i+1).map(num=><option value = {num} key={num}>
+        {Array.from({length:30},(_,i)=>i+1)
+        .map(num=> <option value = {num} key={num}>
           {num}
         </option>)}
       </select>
      
-      <input type="text" placeholder="...Likho Kuch" 
-      value={description} 
-      onChange={(e)=>{
-        console.log(e.target.value)
-        setDescription(e.target.value)
-      }}/>
+      <input type="text" placeholder="...Likho Kuch"  value={description} onChange={(e)=>{console.log(e.target.value)
+       setDescription(e.target.value)}}/>
       <button>Add</button>
     </form>
   )
