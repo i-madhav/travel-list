@@ -7,6 +7,7 @@ const initialItems = [
 ]
 
 export default function App (){
+
   return(
     <div className="app">
       <Logo/>
@@ -24,18 +25,25 @@ function Logo(){
 function Form(){
 const[description,setDescription]=useState("")
 const[quantity,setQuantity]=useState(1)
-const[item,setItem] = useState([])
+const[items,setItems] = useState([])
 
+function handleAddItems(items){
+  setItems(item =>[...item, items])
+}
 
 function handleSubmit(e){
   e.preventDefault();
   if(!description) return null;
+  
   const newItem = {description, id:Date.now() ,packed:false , quantity};
   console.log(newItem)
 
   setDescription("")
   setQuantity(1)
+
+  handleAddItems(newItem)
 }
+
   return(
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your trip!</h3>
