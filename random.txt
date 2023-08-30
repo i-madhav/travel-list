@@ -1,0 +1,35 @@
+[Explain the below code to a college student in a very detailed manner , Explaining each and every part of the code . ]
+
+function App(){
+const[items,setItems] = useState([])
+  
+function handleAddItems(item){
+  setItems(items =>[...items, item])
+}
+
+function handleDeleteItem(id){
+  setItems(items => items.filter(item => item.id !== id))
+}
+
+  return(
+    <div className="app">
+      <Logo/>
+      <Form onAddItems ={handleAddItems} />
+      <PackingList itemsData ={items}  onDeleteItem ={handleDeleteItem} />
+      <Stats/>
+    </div>
+  )
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  if(!description) return null;
+
+  const newItem = {description, id:Date.now() ,packed:false , quantity};
+  console.log(newItem)
+
+  setDescription("")
+  setQuantity(1)
+
+  onAddItems(newItem)
+}
