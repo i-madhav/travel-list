@@ -79,7 +79,7 @@ function Item({itemObj , onDeleteItem}){
     <li>
       <span style={itemObj.packed ? {textDecoration:"line-through"} : {} }> 
       {itemObj.quantity} {itemObj.description}
-      </span>
+      </span> 
       <button onClick={ ()=> onDeleteItem(itemObj.id)}>❌</button>
     </li>
   )
