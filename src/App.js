@@ -17,12 +17,15 @@ function handleDeleteItem(id){
   setItems(items => items.filter(item => item.id !== id))
 }
 
+function handleToggleItem(id){
+  setItems(items => items.map(item => item.id === id ? {...item , packed:!item.packed} : item))
+}
   return(
     <div className="app">
       <Logo/>
       <Form onAddItems ={handleAddItems} />
-      <PackingList itemsData ={items}  onDeleteItem ={handleDeleteItem} />
-      <Stats/>
+      <PackingList itemsData ={items}  onDeleteItem ={handleDeleteItem} onToggleItem={handleToggleItem} />
+      <Stats itemsData ={items} />
     </div>
   )
 }
@@ -64,20 +67,20 @@ function handleSubmit(e){
   )
 }
 
-function PackingList({itemsData , onDeleteItem}){
+function PackingList({itemsData , onDeleteItem , onToggleItem}){
   return(
     <div className="list">
     <ul>
     {itemsData.map((item)=>
-     <Item itemObj ={item} key={item.id} onDeleteItem={ onDeleteItem}/>)}
+     <Item itemObj ={item} key={item.id} onDeleteItem={ onDeleteItem} onToggleItem={onToggleItem} />)}
     </ul>
   </div>
 )}
 
-function Item({itemObj , onDeleteItem}){
+function Item({itemObj , onDeleteItem , onToggleItem}){
   return(
     <li>
-      <input type="checkbox" value={itemObj} onChange={()=>{}}/>
+      <input type="checkbox" value={itemObj} onChange={()=>{onToggleItem(itemObj.id)}}/>
       <span style={itemObj.packed ? {textDecoration:"line-through"} : {} }> 
       {itemObj.quantity} {itemObj.description}
       </span> 
@@ -86,9 +89,18 @@ function Item({itemObj , onDeleteItem}){
   )
 }
 
-function Stats(){
+function Stats({itemsData}){
+if(!itemsData.length) return <p className="stats">Add Some Items MyLord</p> ; 
+
+const numItems = itemsData.length;
+const numPacked = itemsData.filter(item=>(item.packed)).length;
+const percentage = Math.round((numPacked/numItems * 100))
   return(
   <footer className="stats">
-    <em>You have X items on your list.</em>
+    <em>
+      {percentage === 100 ? ("You are ready yo boom boom 💥") :
+        `You have ${numItems} items on your list, and you already  packed ${numPacked} (${percentage}%)`
+       }
+      </em>
   </footer>) 
 }
