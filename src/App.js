@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 
 const initialItems = [
@@ -21,11 +20,17 @@ function handleDeleteItem(id){
 function handleToggleItem(id){
   setItems(items => items.map(item => item.id === id ? {...item , packed:!item.packed} : item))
 }
+
+function handleClearList(items){
+  //setItems(items.filter(item=> item.length > 0))
+  const confirm = window.confirm("Are You Sure You Want TO Boom💥")
+  if(confirm) setItems([])
+}
   return(
     <div className="app">
       <Logo/>
       <Form onAddItems ={handleAddItems} />
-      <PackingList itemsData ={items}  onDeleteItem ={handleDeleteItem} onToggleItem={handleToggleItem} />
+      <PackingList itemsData ={items}  onDeleteItem ={handleDeleteItem} onToggleItem={handleToggleItem}  onClearList={handleClearList} />
       <Stats itemsData ={items} />
     </div>
   )
@@ -68,16 +73,16 @@ function handleSubmit(e){
   )
 }
 
-function PackingList({itemsData , onDeleteItem , onToggleItem}){
+function PackingList({itemsData , onDeleteItem , onToggleItem, onClearList}){
   const[sortBy , setSortBy] = useState("input")
-  let sortItem;
-  if(sortBy === "input") sortItem = itemsData;
-  if(sortBy === "description") sortItem = itemsData.slice().sort((a,b)=>a.description.localeCompare(b.description));
-  if(sortBy === "packed") sortItem = itemsData.slice().sort((a,b)=>Number(a.packed)-Number(b.packed))
+  let sortedItem;
+  if(sortBy === "input") sortedItem = itemsData;
+  if(sortBy === "description") sortedItem = itemsData.slice().sort((a,b)=>a.description.localeCompare(b.description));
+  if(sortBy === "packed") sortedItem = itemsData.slice().sort((a,b)=>Number(a.packed)-Number(b.packed))
   return(
     <div className="list">
     <ul>
-    {itemsData.map((item)=>
+    {sortedItem.map((item)=>
      <Item itemObj ={item} key={item.id} onDeleteItem={ onDeleteItem} onToggleItem={onToggleItem} />)}
     </ul>
 
@@ -87,6 +92,8 @@ function PackingList({itemsData , onDeleteItem , onToggleItem}){
         <option value='description'>Sort by description</option>
         <option value='packed'>Sort by packed status</option>
       </select>
+
+      <button onClick={()=>onClearList(itemsData)}>Boom💥</button>
     </div>
   </div>
 )}
